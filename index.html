@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+  <meta charset="UTF-8">
+  <title>扫雷</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta http-equiv="cleartype" content="on">
+
+    <style>
+      html,body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #game {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: 0 auto;
+        background: #282c34;
+        color: #fff;
+        text-align: center;
+        font: 'normal 32px PingFang SC,Helvetica Neue,Helvetica,Microsoft Yahei,Arial,Hiragino Sans GB,sans-serif';
+      }
+
+      #game:empty::after {
+        content: '';
+        display: block;
+        width: 48px;
+        height: 48px;
+        border-radius: 3px;
+        background-color: #0e89b6;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin: -24px 0 0 -24px;
+        -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
+        animation: sk-rotateplane 1.2s infinite ease-in-out;
+      }
+
+      @-webkit-keyframes sk-rotateplane {
+        0% { -webkit-transform: perspective(120px); }
+        50% { -webkit-transform: perspective(120px) rotateY(180deg); }
+        100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg); }
+      }
+
+      @keyframes sk-rotateplane {
+        0% { 
+          transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+          -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+        } 50% { 
+          transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+          -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+        } 100% { 
+          transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+          -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+        }
+      }
+    </style>
+</head>
+
+<body>
+  <div id="game"></div>
+  <script src="dist/vendor.bundle.js"></script>
+  <script src="dist/bundle.js"></script>
+</body>
+</html>

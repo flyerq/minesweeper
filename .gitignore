@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.vscode/
+.idea/
+/assets/src/
+
+# 忽略临时文件
+__*
+
+# 忽略日志文件
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

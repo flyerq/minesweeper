@@ -1,0 +1,14 @@
+@font-face {
+  font-family: 'Black Ops One';
+  font-style: normal;
+  font-weight: 400;
+  src: url('Black Ops One/Black-Ops-One.eot');
+  src: local('Black Ops One'),
+    local('BlackOpsOne-Regular'),
+    url('Black Ops One/Black-Ops-One.woff2') format('woff2'),
+    url('Black Ops One/Black-Ops-One.eot?#iefix') format('embedded-opentype'),
+    url('Black Ops One/Black-Ops-One.woff') format('woff'),
+    url('Black Ops One/Black-Ops-One.svg#BlackOpsOne') format('svg'),
+    url('Black Ops One/Black-Ops-One.ttf') format('truetype');
+}
+
