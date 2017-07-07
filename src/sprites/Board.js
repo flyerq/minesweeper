@@ -65,8 +65,8 @@ export default class Board {
     if (this.game.device.touch) {
       // 点击
       this.game.input.onTap.add(pointer => {
-        // 如果是鼠标事件直接跳过
-        if (pointer.isMouse) {
+        // 如果是鼠标事件，或正在平移或缩放游戏面板，直接跳过
+        if (pointer.isMouse || Board.panning || Board.pinching) {
           return;
         }
 
@@ -86,10 +86,10 @@ export default class Board {
       }, this);
 
       // 长按
-      this.game.input.holdRate = 600;
+      this.game.input.holdRate = 500;
       this.game.input.onHold.add(pointer => {
-        // 如果是鼠标事件直接跳过
-        if (pointer.isMouse) {
+        // 如果是鼠标事件，或正在平移或缩放游戏面板，直接跳过
+        if (pointer.isMouse || Board.panning || Board.pinching) {
           return;
         }
         

@@ -91,6 +91,8 @@ export default class Game extends Phaser.State {
       if(event.isFinal) {
         transform.translate = null;
         transform.scale = null;
+        Board.panning = false;
+        Board.pinching = false;
       }
     });
 
@@ -231,9 +233,15 @@ export default class Game extends Phaser.State {
 
   // 平移游戏面板事件处理器
   handlePan(event) {
-    if(event.type == 'panstart') {
+    // 初始化平移起始坐标
+    if (event.type == 'panstart') {
       boardStartX = this.board.group.x;
       boardStartY = this.board.group.y;
+    }
+
+    // 标记游戏面板正在平移
+    if (event.type == 'panmove') {
+      Board.panning = true;
     }
 
     // 获取移动到的坐标
@@ -260,8 +268,14 @@ export default class Game extends Phaser.State {
 
   // 双指缩放游戏面板事件处理器
   handlePinch(event) {
-    if(event.type == 'pinchstart') {
+    // 初始化起始缩放
+    if (event.type == 'pinchstart') {
       initScale = this.board.group.scale.x;
+    }
+
+    // 标记游戏面板正在缩放
+    if (event.type == 'panmove') {
+      Board.pinching = true;
     }
 
     transform.scale = clamp(initScale * event.scale, 1, this.boardMaxScale);
