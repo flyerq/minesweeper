@@ -79,7 +79,7 @@ export default class Tile extends Phaser.Sprite {
     // 方块绘制动画
     this.events.onAddedToGroup.add((tile, group) => {
       let delay = this.game.rnd.between(100, 600);
-      game.add.tween(tile).from({alpha: 0}, 800, 'Expo.easeOut', true, delay);
+      this.game.add.tween(tile).from({alpha: 0}, 800, 'Expo.easeOut', true, delay);
     });
   }
 
@@ -241,13 +241,13 @@ export default class Tile extends Phaser.Sprite {
       // 创建数字方块内容层(如果不是空方块)
       if (!this.isEmpty()) {
         let style = {...this.fontContentStyle, fill: colors[this.currentValue]};
-        this.contentLayer = game.make.text(this.tilePivot, this.tilePivot, this.currentValue, style);
+        this.contentLayer = this.game.make.text(this.tilePivot, this.tilePivot, this.currentValue, style);
         this.contentLayer.anchor.setTo(0.5, 0.42);
         this.addChild(this.contentLayer);
       }
 
       // 创建覆盖层
-      this.coverLayer = game.make.sprite(0, 0, assets[this.assetKey].cover);
+      this.coverLayer = this.game.make.sprite(0, 0, assets[this.assetKey].cover);
       this.addChild(this.coverLayer);
     }
 
@@ -270,12 +270,12 @@ export default class Tile extends Phaser.Sprite {
 
     // 创建内容层
     let style = {...this.iconContentStyle, fill: colors.mine};
-    this.contentLayer = game.make.text(this.tilePivot, this.tilePivot, Icons.mine, style);
+    this.contentLayer = this.game.make.text(this.tilePivot, this.tilePivot, Icons.mine, style);
     this.contentLayer.anchor.setTo(0.5, 0.42);
     this.addChild(this.contentLayer);
 
     // 创建覆盖层
-    this.coverLayer = game.make.sprite(0, 0, coverKey);
+    this.coverLayer = this.game.make.sprite(0, 0, coverKey);
     this.addChild(this.coverLayer);
 
     // 如果存在标标记层将其移动到顶层
@@ -287,11 +287,11 @@ export default class Tile extends Phaser.Sprite {
     this.coverTween.to({alpha: 0}, 400, 'Linear', false);
 
     // 爆炸特效层
-    this.explosionLayer = this.game.add.sprite(this.width / 2, this.height / 2, 'explosion');
+    this.explosionLayer = this.game.add.sprite(0, 0, 'explosion');
     this.explosionLayer.anchor.setTo(0.5);
-    this.explosionLayer.width = this.width * 2;
-    this.explosionLayer.height = this.height * 2;
-    this.explosionLayer.alignIn(this, Phaser.CENTER, this.board.group.x, this.board.group.y);
+    this.explosionLayer.width = this.board.tileWidth * 2;
+    this.explosionLayer.height = this.board.tileHeight * 2;
+    this.explosionLayer.alignIn(this, Phaser.CENTER, this.board.initOffsetX, this.board.initOffsetY);
     this.explosionLayer.visible = false;
     this.explosionLayer.animations.add('explosion');
   }
@@ -312,7 +312,7 @@ export default class Tile extends Phaser.Sprite {
     this.coverLayer.kill();
 
     // 半秒后切换地雷为已爆炸状态
-    let timer = game.time.create(true);
+    let timer = this.game.time.create(true);
     timer.add(500, () => {
       this.contentLayer.fill = this.tippingPoint ? colors.tippingPoint : colors.exploded;
       this.contentLayer.setText(Icons.exploded, true)
@@ -346,26 +346,54 @@ export default class Tile extends Phaser.Sprite {
   }
 
   // 标记方块
-  mark () {
+  mark () {console.log(this.scale);
+    let markHideY = -160 * DPR / this.scale.x;
+    let markHideSize = this.iconContentStyle.fontSize / this.scale.x;
+
     // 创建记号层
     if (!this.markLayer) {
-      this.markLayer = game.make.text(this.tilePivot, this.tilePivot, '', this.iconContentStyle);
+      this.markLayer = this.game.make.text(this.tilePivot, this.tilePivot, '', this.iconContentStyle);
       this.markLayer.anchor.setTo(0.5, 0.42);
       this.markLayer.setShadow(0, 1, 'rgba(255,255,255,0.4)', 0);
       this.addChild(this.markLayer);
+      this.markLayer.alive = false;
+
+      // 记号层补间动画
+      this.markInTween = this.game.make.tween(this.markLayer)
+        .to({alpha: 1, y: this.tilePivot, fontSize: this.iconContentStyle.fontSize}, 300, 'Power3');
+      this.markOutTween = this.game.add.tween(this.markLayer)
+        .to({alpha: 0, y: markHideY, fontSize: markHideSize, rotation: Math.PI / 2}, 300, 'Power3');
+    }
+
+    // 如果正在运行补间动画，直接跳过
+    if (this.markInTween.isRunning || this.markOutTween.isRunning) {
+      return;
     }
 
     let coverLayer = this.coverLayer || this;
+    this.markLayer.fontSize = markHideSize;
+    this.markLayer.rotation = 0;
+    this.markLayer.alpha = 0;
+    this.markLayer.y = markHideY;
     if (!this.isMarked()) {
       this.markLayer.fill = colors.flag;
       this.markLayer.setText(Icons.flag, true);
+      this.markLayer.alive = true;
+      this.markInTween.start();
       coverLayer.loadTexture(assets[this.assetKey].flag);
     } else if (this.isFlagged()) {
       this.markLayer.fill = colors.unknown;
       this.markLayer.setText(Icons.unknown, true);
+      this.markLayer.alive = true;
+      this.markInTween.start();
       coverLayer.loadTexture(assets[this.assetKey].unknown);
     } else if (this.isUnknown()) {
-      this.markLayer.setText('', true);
+      this.markLayer.fill = colors.disable;
+      this.markLayer.alive = false;
+      this.markLayer.alpha = 1;
+      this.markLayer.y = this.tilePivot;
+      this.markLayer.fontSize = this.iconContentStyle.fontSize;
+      this.markOutTween.start();
       coverLayer.loadTexture(assets[this.assetKey].cover);
     }
 
@@ -381,7 +409,7 @@ export default class Tile extends Phaser.Sprite {
 
     // 创建错误标识层
     let style = {...this.iconContentStyle, fill: colors.wrong};
-    this.wrongLayer = game.make.text(this.tilePivot, this.tilePivot, Icons.wrong, style);
+    this.wrongLayer = this.game.make.text(this.tilePivot, this.tilePivot, Icons.wrong, style);
     this.wrongLayer.anchor.setTo(0.5, 0.42);
     this.addChild(this.wrongLayer);
     this.markLayer.fill = colors.disable;
@@ -404,17 +432,21 @@ export default class Tile extends Phaser.Sprite {
 
   // 检查方块是否已被标记
   isMarked () {
-    return this.markLayer && this.markLayer.text !== '';
+    return this.markLayer && this.markLayer.alive;
   }
 
   // 检查方块是否已被标记为地雷
   isFlagged () {
-    return this.markLayer && this.markLayer.text === Icons.flag;
+    return this.markLayer &&
+      this.markLayer.alive &&
+      this.markLayer.text === Icons.flag;
   }
 
   // 检查方块是否已被标记为未知方块
   isUnknown () {
-    return this.markLayer && this.markLayer.text === Icons.unknown;
+    return this.markLayer &&
+      this.markLayer.alive &&
+      this.markLayer.text === Icons.unknown;
   }
 
   // 检查是否为数字方块

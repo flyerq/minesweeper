@@ -3,7 +3,7 @@ import Tile from './Tile';
 import { delay } from '../utils';
 
 export default class Board {
-  constructor ({ game, cols, rows, mines, tileWidth, tileHeight }) {
+  constructor ({ game, cols, rows, mines, tileWidth, tileHeight, boardMaxScale }) {
     this.game = game;
     this.group = game.add.group();
 
@@ -17,6 +17,13 @@ export default class Board {
     // 方块的宽度与高度
     this.tileWidth = tileWidth;
     this.tileHeight = tileHeight;
+
+    // 游戏面板的最大缩放比例
+    this.boardMaxScale = boardMaxScale;
+
+    // 游戏面板初始化偏移坐标
+    this.initOffsetX = 0;
+    this.initOffsetY = 0;
 
     // 用于存放游戏面板中行与列的方块对象的二维数组
     this.board = [];
@@ -58,6 +65,11 @@ export default class Board {
     if (this.game.device.touch) {
       // 点击
       this.game.input.onTap.add(pointer => {
+        // 如果是鼠标事件直接跳过
+        if (pointer.isMouse) {
+          return;
+        }
+
         let tile = this.getPointerTile(pointer);
 
         // 如果指针坐标下不存在方块直接跳过
@@ -76,10 +88,16 @@ export default class Board {
       // 长按
       this.game.input.holdRate = 800;
       this.game.input.onHold.add(pointer => {
+        // 如果是鼠标事件直接跳过
+        if (pointer.isMouse) {
+          return;
+        }
+        
         let tile = this.getPointerTile(pointer);
+        let downTile = this.getPointerTile(pointer.positionDown);
 
-        // 如果指针坐标下不存在方块直接跳过
-        if (!tile) {
+        // 如果指针坐标下不存在方块或指针已移出按下时的方块时，直接跳过
+        if (!tile || tile !== downTile) {
           return;
         }
 
@@ -95,10 +113,13 @@ export default class Board {
 
   // 初始化面板
   async init () {
-    const { game, rows, cols, tileWidth, tileHeight } = this;
+    const { game, rows, cols, tileWidth, tileHeight, boardMaxScale } = this;
     
     // 生成方块所需的图像资源
-    const assetKey = Tile.generateTileAssets(tileWidth, tileHeight);
+    const assetKey = Tile.generateTileAssets(
+      tileWidth * boardMaxScale,
+      tileHeight * boardMaxScale
+    );
 
     // 播放游戏初始化音效
     Board.soundInit.play();
@@ -113,6 +134,8 @@ export default class Board {
           y: y * tileHeight,
           assetKey
         });
+        tile.width = tileWidth;
+        tile.height = tileHeight;
         tile.column = x;  // 方块在面板中的横向(所在列)索引
         tile.row = y;     // 方块在面板中的纵向(所在行)索引
         tile.onRevealed.add(this.handleTileRevealed, this);
@@ -125,13 +148,18 @@ export default class Board {
     }
 
     // 居中面板
-    this.moveTo(game.world.centerX, game.world.centerY);
+    this.alignToCenter(game.world.centerX, game.world.centerY);
   }
 
-  // 移动面板坐标(水平与垂直居中)
-  moveTo (x, y) {
-    this.group.x = x - this.group.centerX;
-    this.group.y = y - this.group.centerY;
+  // 水平与垂直居中游戏面板
+  alignToCenter () {
+    this.group.alignIn(this.game.world, Phaser.CENTER);
+
+    // 保存初始化偏移坐标信息
+    if (this.group.scale.x === 1) {
+      this.initOffsetX = this.group.x;
+      this.initOffsetY = this.group.y;
+    }
   }
 
   // 生成地雷方块
@@ -216,8 +244,10 @@ export default class Board {
       return null;
     }
 
-    let x = Math.floor((pointer.x - this.group.x) / this.tileWidth);
-    let y = Math.floor((pointer.y - this.group.y) / this.tileHeight);
+    let scale = this.group.scale.x;
+    let x = Math.floor((pointer.x - this.group.x) / (this.tileWidth * scale));
+    let y = Math.floor((pointer.y - this.group.y) / (this.tileHeight * scale));
+
     return this.board[y][x];
   }
 
