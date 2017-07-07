@@ -12,8 +12,8 @@ import config from './config';
 
 export default class Game extends Phaser.Game {
   constructor () {
-    const width = Math.max(320, document.documentElement.clientWidth);
-    const height = Math.max(480, document.documentElement.clientHeight);
+    const width = Math.max(0/*280*/, document.documentElement.clientWidth);
+    const height = Math.max(0/*280*/, document.documentElement.clientHeight);
     const gameConfig = {
       width: width * window.devicePixelRatio,
       height: height * window.devicePixelRatio,
