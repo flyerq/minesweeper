@@ -237,10 +237,8 @@ export default class Game extends Phaser.State {
     if (event.type == 'panstart') {
       boardStartX = this.board.group.x;
       boardStartY = this.board.group.y;
-    }
 
-    // 标记游戏面板正在平移
-    if (event.type == 'panmove') {
+      // 标记游戏面板正在平移
       Board.panning = true;
     }
 
@@ -271,10 +269,8 @@ export default class Game extends Phaser.State {
     // 初始化起始缩放
     if (event.type == 'pinchstart') {
       initScale = this.board.group.scale.x;
-    }
 
-    // 标记游戏面板正在缩放
-    if (event.type == 'panmove') {
+      // 标记游戏面板正在缩放
       Board.pinching = true;
     }
 
