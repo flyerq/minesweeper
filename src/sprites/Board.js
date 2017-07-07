@@ -86,7 +86,7 @@ export default class Board {
       }, this);
 
       // 长按
-      this.game.input.holdRate = 800;
+      this.game.input.holdRate = 600;
       this.game.input.onHold.add(pointer => {
         // 如果是鼠标事件直接跳过
         if (pointer.isMouse) {
