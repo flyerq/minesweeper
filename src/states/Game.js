@@ -233,6 +233,14 @@ export default class Game extends Phaser.State {
 
   // 平移游戏面板事件处理器
   handlePan(event) {
+    let availRect = this.availRect;
+    let boardRect = this.board.group.getBounds();
+    
+    // 如果游戏面板大小未超出有效范围，直接跳过
+    if (boardRect.width <= availRect.width && boardRect.height <= availRect.height) {
+      return;
+    }
+
     // 初始化平移起始坐标
     if (event.type == 'panstart') {
       boardStartX = this.board.group.x;
@@ -247,8 +255,6 @@ export default class Game extends Phaser.State {
     let y = boardStartY + event.deltaY * DPR;
 
     // 限制游戏面板可移动的范围
-    let availRect = this.availRect;
-    let boardRect = this.board.group.getBounds();
     if (boardRect.width > availRect.width) {
       x = clamp(x, availRect.x + availRect.width - boardRect.width, availRect.x);
     } else {

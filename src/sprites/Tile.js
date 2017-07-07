@@ -346,7 +346,7 @@ export default class Tile extends Phaser.Sprite {
   }
 
   // 标记方块
-  mark () {console.log(this.scale);
+  mark () {
     let markHideY = -160 * DPR / this.scale.x;
     let markHideSize = this.iconContentStyle.fontSize / this.scale.x;
 

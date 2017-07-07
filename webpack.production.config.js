@@ -17,7 +17,7 @@ module.exports = {
       'babel-polyfill',
       path.resolve(__dirname, 'src/main.js')
     ],
-    vendor: ['pixi', 'p2', 'phaser', 'webfontloader']
+    vendor: ['pixi', 'p2', 'phaser', 'webfontloader', 'lodash', 'hammerjs']
 
   },
   output: {
