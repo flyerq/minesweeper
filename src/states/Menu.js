@@ -9,9 +9,6 @@ export default class Menu extends Phaser.State {
     this.loadingY = y;
   }
 
-  preload () {
-  }
-
   create () {
     let gametWidth = this.game.width;
     let gameHeight = this.game.height;
@@ -91,8 +88,5 @@ export default class Menu extends Phaser.State {
     this.game.add.tween(easyButton.button).from({x: -buttonWidth, alpha: 0}, 1000, 'Expo.easeInOut', true, 200);
     this.game.add.tween(mediumButtom.button).from({x: -buttonWidth, alpha: 0}, 1000, 'Expo.easeInOut', true, 300);
     this.game.add.tween(expertButton.button).from({x: -buttonWidth, alpha: 0}, 1000, 'Expo.easeInOut', true, 400);
-  }
-
-  render () {
   }
 }

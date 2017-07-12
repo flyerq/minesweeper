@@ -8,8 +8,6 @@ export default class GameWin extends Phaser.State {
     this.gameData = gameData;
   }
 
-  preload () {}
-
   async create () {
     // 显示游戏胜利提示文字("You Win")
     let text = this.game.add.text(0, 0, 'You Win');
@@ -32,8 +30,5 @@ export default class GameWin extends Phaser.State {
 
     // 创建计分板
     let scoreboard = new Scoreboard(this.game, this.gameData);
-  }
-
-  render () {
   }
 }

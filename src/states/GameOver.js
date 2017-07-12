@@ -8,8 +8,6 @@ export default class GameOver extends Phaser.State {
     this.gameData = gameData;
   }
 
-  preload () {}
-
   async create () {
     // 显示游戏失败提示文字("You Lose")
     let text = this.game.add.text(0, 0, 'You Lose');
@@ -32,8 +30,5 @@ export default class GameOver extends Phaser.State {
 
     // 创建计分板
     let scoreboard = new Scoreboard(this.game, this.gameData);
-  }
-
-  render () {
   }
 }
