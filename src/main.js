@@ -19,6 +19,8 @@ export default class Game extends Phaser.Game {
       height: height * window.devicePixelRatio,
       renderer: Phaser.CANVAS,
       parent: 'game',
+      scaleMode: Phaser.ScaleManager.SHOW_ALL,
+      fullScreenScaleMode: Phaser.ScaleManager.SHOW_ALL,
     };
     super(gameConfig);
 
