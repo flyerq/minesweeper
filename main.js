@@ -3,52 +3,62 @@ const { app, BrowserWindow } = electron;
 const path = require('path');
 const url = require('url');
 
+// 主窗体
 let mainWindow;
 
 function createWindow () {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600});
+  // 屏幕工作区域尺寸
+  const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
 
-  // and load the index.html of the app.
+  // 创建浏览器窗口
+  mainWindow = new BrowserWindow({
+    width,
+    height,
+    show: false,
+    title: '扫雷',
+    maximizable: false,
+    resizable: false,
+    backgroundColor: '#282c34',
+    defaultEncoding: 'UTF-8',
+  });
+
+  // 禁用菜单栏
+  mainWindow.setMenu(null);
+  // 最大化窗口
+  mainWindow.maximize();
+  // 显示窗口
+  mainWindow.show();
+
+  // 加载应用主页面
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
-    slashes: true
-  }))
+    slashes: true,
+  }));
 
-  // Open the DevTools.
+  // 调出开发者工具栏
   // mainWindow.webContents.openDevTools()
 
-  // Emitted when the window is closed.
+  // 主窗口已关闭事件处理
   mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
+    // 解除窗口引用
     mainWindow = null;
-  })
+  });
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
+// Electron应用已准备就绪，其所有API此时已可调用
 app.on('ready', createWindow);
 
-// Quit when all windows are closed.
+// 当应用的所有窗口都已关闭时退出应用
 app.on('window-all-closed', function () {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
     app.quit();
   }
-})
+});
 
+// 应用被激活时，如果不存在主窗体时，创建主窗体
 app.on('activate', function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
     createWindow();
   }
-})
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+});
