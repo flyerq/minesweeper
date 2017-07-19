@@ -1,0 +1,33 @@
+{
+  "name": "minesweeper",
+  "short_name": "扫雷",
+  "icons": [{
+    "src": "assets/icons/app-icon-x128.png",
+    "sizes": "128x128",
+    "type": "image/png"
+  }, {
+    "src": "assets/icons/app-icon-x144.png",
+    "sizes": "144x144",
+    "type": "image/png"
+  }, {
+    "src": "assets/icons/app-icon-x152.png",
+    "sizes": "152x152",
+    "type": "image/png"
+  }, {
+    "src": "assets/icons/app-icon-x192.png",
+    "sizes": "192x192",
+    "type": "image/png"
+  }, {
+    "src": "assets/icons/app-icon-x256.png",
+    "sizes": "256x256",
+    "type": "image/png"
+  }, {
+    "src": "assets/icons/app-icon-x512.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#282c34",
+  "theme_color": "#0e89b6"
+}

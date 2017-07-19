@@ -37,7 +37,7 @@ function createWindow () {
   }));
 
   // 调出开发者工具栏
-  // mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools();
 
   // 主窗口已关闭事件处理
   mainWindow.on('closed', function () {

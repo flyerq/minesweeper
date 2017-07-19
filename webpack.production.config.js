@@ -1,15 +1,47 @@
-var path = require('path')
-var webpack = require('webpack')
+const path = require('path');
+const webpack = require('webpack');
+const pkg = require('./package.json');
+const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
 // Phaser webpack config
-var phaserModule = path.join(__dirname, '/node_modules/phaser-ce/')
-var phaser = path.join(phaserModule, 'build/custom/phaser-split.js')
-var pixi = path.join(phaserModule, 'build/custom/pixi.js')
-var p2 = path.join(phaserModule, 'build/custom/p2.js')
+const phaserModule = path.join(__dirname, '/node_modules/phaser-ce/');
+const phaser = path.join(phaserModule, 'build/custom/phaser-split.js');
+const pixi = path.join(phaserModule, 'build/custom/pixi.js');
+const p2 = path.join(phaserModule, 'build/custom/p2.js');
 
-var definePlugin = new webpack.DefinePlugin({
+const definePlugin = new webpack.DefinePlugin({
   __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'false'))
-})
+});
+
+// sw-precache-webpack-plugin 插件配置
+const SW_CACHEID = pkg.name;
+const SW_FILENAME = `${SW_CACHEID}-service-worker.js`;
+const SW_FILEPATH = path.resolve(__dirname, SW_FILENAME);
+const SW_IGNORE_PATTERNS = [/dist\/.*\.html/];
+const SW_PRECACHE_CONFIG = {
+  minify: true,
+  cacheId: SW_CACHEID,
+  filename: SW_FILENAME,
+  filepath: SW_FILEPATH,
+  staticFileGlobs: [
+    './',
+    './index.html',
+    './favicon.ico',
+    './manifest.json',
+    './assets/images/**/*.{png,jpg,gif,svg}',
+    './assets/sounds/**/*.{mp3,ogg,wav}',
+  ],
+  stripPrefix: './',
+  mergeStaticsConfig: true,
+  runtimeCaching: [{
+    urlPattern: /assets\/fonts\/.*$/,
+    handler: 'cacheFirst'
+  }, {
+    urlPattern: /assets\/icons\/.*$/,
+    handler: 'cacheFirst'
+  }],
+  staticFileGlobsIgnorePatterns: SW_IGNORE_PATTERNS,
+};
 
 module.exports = {
   entry: {
@@ -35,7 +67,8 @@ module.exports = {
         comments: false
       }
     }),
-    new webpack.optimize.CommonsChunkPlugin({ name: 'vendor'/* chunkName= */, filename: 'vendor.bundle.js'/* filename= */})
+    new webpack.optimize.CommonsChunkPlugin({ name: 'vendor'/* chunkName= */, filename: 'vendor.bundle.js'/* filename= */}),
+    new SWPrecacheWebpackPlugin(SW_PRECACHE_CONFIG),
   ],
   module: {
     rules: [
