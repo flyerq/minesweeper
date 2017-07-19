@@ -1,6 +1,8 @@
 {
   "name": "minesweeper",
+  "lang": "zh-Hans",
   "short_name": "扫雷",
+  "description": "一款跨终端的扫雷游戏",
   "icons": [{
     "src": "assets/icons/app-icon-x128.png",
     "sizes": "128x128",
