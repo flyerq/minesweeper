@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 import Tile from '../sprites/Tile';
 import Board from '../sprites/Board';
-import { setupPWA } from '../service-worker-registration';
 import { delay, Icons, centerGameObjects } from '../utils';
 import config from '../config';
 const { tileWidth, tileHeight } = config;
@@ -44,8 +43,6 @@ export default class Splash extends Phaser.State {
   }
 
   async create () {
-    setupPWA();
-
     // 初始化游戏音效静态资源
     // 游戏初始化音效
     Board.soundInit = Board.soundInit || this.game.add.audio('soundInit');
