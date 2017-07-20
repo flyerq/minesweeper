@@ -1,5 +1,5 @@
 {
-  "name": "minesweeper",
+  "name": "扫雷",
   "lang": "zh-Hans",
   "short_name": "扫雷",
   "description": "一款跨终端的扫雷游戏",
@@ -30,6 +30,6 @@
   }],
   "start_url": "./",
   "display": "standalone",
-  "theme_color": "#0e89b6",
+  "theme_color": "#282c34",
   "background_color": "#282c34"
 }
