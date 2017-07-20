@@ -1,4 +1,4 @@
-import './service-worker-registration';   // PWA注册
+// import './service-worker-registration';   // PWA注册
 import 'pixi';
 import 'p2';
 import Phaser from 'phaser';
