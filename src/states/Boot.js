@@ -48,7 +48,10 @@ export default class Boot extends Phaser.State {
     this.game.add.text(x, y, '\ue99a', iconStyle);
     this.game.add.text(x, y, 'MINESWEEPER', fontStyle);
 
-    // 标记字体已经准备就绪
-    this.fontsReady = true;
+    this.game.time.events.add(Phaser.Timer.SECOND, ()=>{
+      // 标记字体已经准备就绪
+      this.fontsReady = true;
+    }, this);
+    
   }
 }
