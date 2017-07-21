@@ -22,7 +22,8 @@ export default class Boot extends Phaser.State {
         families: ['minesweeper', 'Black Ops One'],
         urls: ['assets/fonts/minesweeper.css', 'assets/fonts/Black Ops One.css'],
         testStrings: {
-          'minesweeper': '\ue99a\ue99b\ue99c'
+          'minesweeper': '\ue99a\ue9e0',
+          'Black Ops One': 'MINESWEEPER',
         }
       },
       active: this.fontsLoaded
@@ -39,6 +40,15 @@ export default class Boot extends Phaser.State {
   }
 
   fontsLoaded () {
+    // 预生成自定义字体(用于解决部分设备，如iOS Safari上首次加载自定义字体时显示未知字符问题)
+    let fontStyle = {font: 'normal 16px Black Ops One', fill: '#fff'};
+    let iconStyle = {...fontStyle, font: 'normal 16px minesweeper'};
+    let x = -this.game.width;
+    let y = -this.game.height;
+    this.game.add.text(x, y, '\ue99a', iconStyle);
+    this.game.add.text(x, y, 'MINESWEEPER', fontStyle);
+
+    // 标记字体已经准备就绪
     this.fontsReady = true;
   }
 }
