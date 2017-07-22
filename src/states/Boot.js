@@ -4,7 +4,8 @@ import config from '../config';
 
 export default class Boot extends Phaser.State {
   init () {
-    this.stage.backgroundColor = config.gameBgColor;
+    this.game.stage.backgroundColor = config.gameBgColor;
+    this.game.stage.disableVisibilityChange = true;
     this.fontsReady = false;
     this.fontsLoaded = this.fontsLoaded.bind(this);
 

@@ -26,8 +26,6 @@ function createWindow () {
   mainWindow.setMenu(null);
   // 最大化窗口
   mainWindow.maximize();
-  // 显示窗口
-  mainWindow.show();
 
   // 加载应用主页面
   mainWindow.loadURL(url.format({
@@ -36,8 +34,14 @@ function createWindow () {
     slashes: true,
   }));
 
-  // 调出开发者工具栏
-  // mainWindow.webContents.openDevTools();
+  // 窗口准备就绪
+  mainWindow.once('ready-to-show', () => {
+    // 显示窗口
+    mainWindow.show();
+
+    // 调出开发者工具栏
+    mainWindow.webContents.openDevTools();
+  });
 
   // 主窗口已关闭事件处理
   mainWindow.on('closed', function () {
