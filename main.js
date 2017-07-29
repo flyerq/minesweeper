@@ -1,5 +1,5 @@
 const electron = require('electron');
-const { app, BrowserWindow } = electron;
+const { app, BrowserWindow, globalShortcut } = electron;
 const path = require('path');
 const url = require('url');
 
@@ -20,6 +20,7 @@ function createWindow () {
     resizable: false,
     backgroundColor: '#282c34',
     defaultEncoding: 'UTF-8',
+    icon: path.join(__dirname, 'assets/icons/app-icon-x256.ico'),
   });
 
   // 禁用菜单栏
@@ -38,15 +39,18 @@ function createWindow () {
   mainWindow.once('ready-to-show', () => {
     // 显示窗口
     mainWindow.show();
-
-    // 调出开发者工具栏
-    mainWindow.webContents.openDevTools();
+    mainWindow.focus();
   });
 
   // 主窗口已关闭事件处理
   mainWindow.on('closed', function () {
     // 解除窗口引用
     mainWindow = null;
+  });
+
+  // 按快捷键"Ctrl+Alt+Shift+F12"打开开发者工具窗口
+  globalShortcut.register('CmdOrCtrl+Alt+Shift+F12', () => {
+    mainWindow.webContents.openDevTools();
   });
 }
 

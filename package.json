@@ -3,15 +3,40 @@
   "version": "1.0.0",
   "description": "一款跨终端的扫雷游戏",
   "private": true,
-  "author": "flyer <flyer@flyerq.com> (http://flyerq.com)",
+  "author": "flyer <flyer@flyerq.com> (https://www.flyerq.com)",
   "license": "MIT",
+  "homepage": "https://app.flyerq.com/minesweeper",
   "repository": "https://github.com/flyerq/minesweeper",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "dev": "concurrently \"webpack\" \"npm run start\"",
-    "build": "webpack --config webpack.production.config.js",
+    "dist": "webpack --config webpack.production.config.js",
+    "pack": "electron-builder --dir",
+    "build": "electron-builder",
     "test": "eslint ./src/**/**.js"
+  },
+  "build": {
+    "appId": "com.flyerq.minesweeper",
+    "asar": true,
+    "directories": {
+      "buildResources": "assets/icons",
+      "output": "build"
+    },
+    "files": [
+      "!node_modules/",
+      "assets/**/*",
+      "!assets/src/",
+      "dist/**/*",
+      "index.html",
+      "main.js",
+      "manifest.json",
+      "package.json"
+    ],
+    "win": {
+      "icon": "assets/icons/app-icon-x256.ico",
+      "target": ["portable", "zip"]
+    }
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -23,6 +48,7 @@
     "browser-sync-webpack-plugin": "^1.1.4",
     "concurrently": "^3.4.0",
     "electron": "^1.6.11",
+    "electron-builder": "^19.17.0",
     "eslint": "^3.19.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.2.0",
