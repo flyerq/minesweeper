@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "一款跨终端的扫雷游戏",
   "private": true,
-  "author": "flyer <flyer@flyerq.com> (https://www.flyerq.com)",
+  "author": "Flyer <flyer@flyerq.com> (https://www.flyerq.com)",
   "license": "MIT",
   "homepage": "https://app.flyerq.com/minesweeper",
   "repository": "https://github.com/flyerq/minesweeper",
@@ -19,24 +19,52 @@
   "build": {
     "appId": "com.flyerq.minesweeper",
     "asar": true,
+    "productName": "minesweeper",
+    "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
     "directories": {
-      "buildResources": "assets/icons",
+      "buildResources": "build-assets",
       "output": "build"
     },
     "files": [
-      "!node_modules/",
+      "!node_modules/hammerjs/",
+      "!node_modules/lodash/",
+      "!node_modules/phaser-ce/",
+      "!node_modules/webfontloader/",
       "assets/**/*",
       "!assets/src/",
       "dist/**/*",
       "index.html",
       "main.js",
+      "updater.html",
+      "updater.js",
       "manifest.json",
       "package.json"
     ],
     "win": {
-      "icon": "assets/icons/app-icon-x256.ico",
-      "target": ["portable", "zip"]
-    }
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    },
+    "nsis": {
+      "language": "2052",
+      "oneClick": false,
+      "perMachine": true,
+      "runAfterFinish": true,
+      "createDesktopShortcut": true,
+      "deleteAppDataOnUninstall": true,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "${name}-${version}-${os}-${arch}-setup.${ext}"
+    },
+    "releaseInfo": {
+      "releaseName": "扫雷"
+    },
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "https://app.flyerq.com/minesweeper/download/"
+      }
+    ]
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -48,7 +76,7 @@
     "browser-sync-webpack-plugin": "^1.1.4",
     "concurrently": "^3.4.0",
     "electron": "^1.6.11",
-    "electron-builder": "^19.17.0",
+    "electron-builder": "^19.19.1",
     "eslint": "^3.19.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.2.0",
@@ -60,6 +88,7 @@
     "webpack": "^2.5.0"
   },
   "dependencies": {
+    "electron-updater": "^2.8.2",
     "hammerjs": "^2.0.8",
     "lodash": "^4.17.4",
     "phaser-ce": "^2.7.7",

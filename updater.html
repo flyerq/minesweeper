@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  <title>扫雷 - 版本更新</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <style>
+      html,body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        user-select: none;
+        background: transparent;
+      }
+
+      .wrapper {
+        display: flex;
+        height: 100vh;
+        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        font: normal 14px/1 "PingFang SC","Microsoft YaHei UI","微软雅黑",Arial,"Hiragino Sans GB",sans-serif;
+      }
+
+      .progress {
+        position: relative;
+        box-sizing: border-box;
+        width: 96%;
+        padding: 4px;
+        background: rgba(0, 0, 0, 0.25);
+        border-radius: 6px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25), 0 1px rgba(255, 255, 255, 0.08);
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        position: relative;
+        height: 28px;
+        width: 0;
+        visibility: hidden;
+        max-width: 100%;
+        border-radius: 4px;
+        background-color: #0e89b6;
+        background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
+        transition: width 0.4s ease;
+        box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.25), inset 0 1px rgba(255, 255, 255, 0.1);
+        overflow: hidden;
+      }
+
+      .tips {
+        position: absolute;
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.9);
+        text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6);
+        margin: 0;
+        padding: 0;
+        z-index: 10;
+      } 
+    </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="progress">
+      <div id="percentBar" class="progress-bar"></div>
+    </div>
+    <p class="tips">正在下载更新(<span id="percentText">0%</span>)</p>
+  </div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+    ipcRenderer.on('progress', function(event, p) {
+      let percentBar = document.getElementById('percentBar');
+      let percentText = document.getElementById('percentText');
+      percentBar.style.visibility = 'visible';
+      percentBar.style.width = p + '%';
+      percentText.innerText = p + '%';
+    });
+  </script>
+</body>
+</html>
