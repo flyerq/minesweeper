@@ -1,7 +1,7 @@
 {
   "name": "minesweeper",
   "version": "1.0.0",
-  "description": "一款跨终端的扫雷游戏",
+  "description": "一款跨平台跨终端的扫雷游戏",
   "private": true,
   "author": "Flyer <flyer@flyerq.com> (https://www.flyerq.com)",
   "license": "MIT",
