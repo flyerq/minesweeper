@@ -306,9 +306,9 @@ export default class Board {
     if (tile.isFlagged()) {
       this.flaggedList.push(tile);
     } else if (tile.isUnknown()) {
+      this.flaggedList = this.flaggedList.filter(t => t !== tile);
       this.unknownList.push(tile);
     } else {
-      this.flaggedList = this.flaggedList.filter(t => t !== tile);
       this.unknownList = this.unknownList.filter(t => t !== tile);
     }
 
