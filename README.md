@@ -67,4 +67,4 @@
 [Cordova]: https://cordova.apache.org/ "Cordova"
 [React Native]: http://facebook.github.io/react-native/ "React Native"
 [PWA]: https://developers.google.com/web/progressive-web-apps/ "Progressive Web Apps"
-[Chrome]: https://www.google.com/chrome/browser/desktop/index.html "Chrome浏览器"
+[Chrome]: https://www.google.com/chrome "Chrome浏览器"
