@@ -32,6 +32,18 @@
   - **Webpack**
   - **PWA** [(Progressive Web Apps)][PWA]
 
+## 浏览器支持
+
+  - **Internet Explorer** >= **9**
+  - **Edge** >= **12**
+  - **Chrome** >= **4**
+  - **Firefox** >= **4**
+  - **Safari** >= **4**
+  - **Opera** >= **10.1**
+  - **iOS Safari** >= **3.2**
+  - **Android Browser** >= **3**
+  - **Internet Explorer Mobile** >= **10**
+
 ## 相关链接
 
 [网页版线上地址](https://app.flyerq.com/minesweeper/ "网页版扫雷")（推荐使用最新版的[Chrome][]浏览器访问）
